@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "734410860053",
+    "firebase_url": "https://aquaguard-1b328.firebaseio.com",
+    "project_id": "aquaguard-1b328",
+    "storage_bucket": "aquaguard-1b328.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:734410860053:android:851b3ab1f9befcfb",
+        "android_client_info": {
+          "package_name": "com.example.rahul.technicial_side_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "734410860053-kgmtsrgoftua21d22e9umjjadosvjev9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.rahul.technicial_side_app",
+            "certificate_hash": "3a047aded92e7380824225d1bb0fbff3e65e7c63"
+          }
+        },
+        {
+          "client_id": "734410860053-81fhi83c237642e7qiu11kqcb6v9ulul.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAT2imjZrSwPFED0F_HlSRLLjboiI6OW3s"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "734410860053-81fhi83c237642e7qiu11kqcb6v9ulul.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
