@@ -296,17 +296,19 @@ public class HomePage extends AppCompatActivity
                     MY_PERMISSIONS_REQUEST_LOCATION);
 
             return;
-        }Toast.makeText(this,"Location is triggered from here acc",Toast.LENGTH_SHORT).show();
+        }Toast.makeText(this,"Location is triggered from here acc",Toast.LENGTH_LONG).show();
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 1, this);
-    }
+        Toast.makeText(this,"Loccation is triggered already",Toast.LENGTH_LONG).show();
+
+}
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_LOCATION: {
-                Intent gpsOptionsIntent = new Intent(
+               /* Intent gpsOptionsIntent = new Intent(
                         android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(gpsOptionsIntent);
+                startActivity(gpsOptionsIntent);*/
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
@@ -319,9 +321,11 @@ public class HomePage extends AppCompatActivity
                 }
                 Toast.makeText(this,"Toast call is triggered from abc",Toast.LENGTH_SHORT).show();
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+                Toast.makeText(this,"Location change started",Toast.LENGTH_SHORT).show();
             }
         }
     }
+
 
     @Override
     public void onLocationChanged(Location location) {
@@ -343,10 +347,13 @@ public class HomePage extends AppCompatActivity
                         googleDirectionsUrl.append("&key=" + AndroidApiKey);
                         obj.put("url",googleDirectionsUrl.toString());
                         arr.put(obj);
+                        Log.e("dataa",googleDirectionsUrl.toString());
+
 
                     }
 
                     isDistanceValueFetched = true;
+
                     new fetchUserLocationData(this,arr);
                 }
         }
@@ -387,6 +394,8 @@ public class HomePage extends AppCompatActivity
         }
         catch (Exception e)
         {
+            loader.dismiss();
+            Toast.makeText(this,"User location fetced but some error occured",Toast.LENGTH_LONG).show();
             loader.setMessage("Error");
         }
     }
