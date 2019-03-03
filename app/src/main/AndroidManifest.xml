@@ -21,7 +21,10 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCz3WgmlPmHucYVfVD6_nP-UAGD_UfvMHw" />
+            android:value="AIzaSyCwkoMXTW-JgRBBHOWG4jyt9e75r5Sx5BQ" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyCwkoMXTW-JgRBBHOWG4jyt9e75r5Sx5BQ" />
 
         <activity
             android:name=".LoginPage"
@@ -45,7 +48,7 @@
         <activity android:name=".otp"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".Summary_page" />
-        <activity android:name=".previousBooking"></activity>
+        <activity android:name=".previousBooking"/>
     </application>
 
 </manifest>

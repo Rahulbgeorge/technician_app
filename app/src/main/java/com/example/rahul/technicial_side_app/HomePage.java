@@ -51,6 +51,7 @@ import com.hookedonplay.decoviewlib.charts.SeriesLabel;
 import com.hookedonplay.decoviewlib.events.DecoEvent;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -68,12 +69,12 @@ public class HomePage extends AppCompatActivity
     User user;
     ArrayList<Customer> customers;
     LatLng myPos=null;
-    boolean isDistanceValueFetched=false;
-    boolean isDutyListFetched=false;
+//    boolean isDistanceValueFetched=false;
+//    boolean isDutyListFetched=false;
     LoadingDialog loader;
 
     String AndroidApiKey="AIzaSyCwkoMXTW-JgRBBHOWG4jyt9e75r5Sx5BQ";
-
+    boolean isDistanceDataFromGooleDownloaded=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -249,14 +250,17 @@ public class HomePage extends AppCompatActivity
     DutyList dutylist;
     @Override
     public void todaysDutyDownloadedSuccessfully(ArrayList<Customer> duty_customer) {
-        isDutyListFetched=true;
+//        isDutyListFetched=true;
         dutylist=new DutyList(duty_customer,this);
         Log.e("duty download","duty downloaded successfully");
         //to be loaded once the location data is downloaded
         //dutylist.loadDutyToLocalMemory();
         initializeFirebase();
         this.customers=duty_customer;
-
+        if(myPos!=null)
+        {
+            downloadUserDistanceData(customers);
+        }
         if(adapter!=null) {
             adapter = new HomePageAdapter(getSupportFragmentManager(), customers);
             pager.setAdapter(adapter);
@@ -296,10 +300,12 @@ public class HomePage extends AppCompatActivity
                     MY_PERMISSIONS_REQUEST_LOCATION);
 
             return;
-        }Toast.makeText(this,"Location is triggered from here acc",Toast.LENGTH_LONG).show();
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 1, this);
-        Toast.makeText(this,"Loccation is triggered already",Toast.LENGTH_LONG).show();
-
+        }
+        else {
+            Toast.makeText(this, "Location is triggered from here acc", Toast.LENGTH_LONG).show();
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+            Toast.makeText(this, "Loccation is triggered already", Toast.LENGTH_LONG).show();
+        }
 }
 
     @Override
@@ -331,7 +337,11 @@ public class HomePage extends AppCompatActivity
     public void onLocationChanged(Location location) {
         myPos=new LatLng(location.getLatitude(),location.getLongitude());
         Log.e("Location fetched","location fetched");
-        try {
+        if(customers!=null && !isDistanceDataFromGooleDownloaded)
+        {
+            downloadUserDistanceData(customers);
+        }
+        /*try {
             JSONObject obj;
             JSONArray arr=new JSONArray();
             if (isDutyListFetched)
@@ -352,13 +362,48 @@ public class HomePage extends AppCompatActivity
 
                     }
 
-                    isDistanceValueFetched = true;
 
                     new fetchUserLocationData(this,arr);
                 }
         }
         catch (Exception e)
-        {}
+        {}*/
+
+
+
+    }
+
+    public void downloadUserDistanceData(ArrayList<Customer> customers)
+    {
+        isDistanceDataFromGooleDownloaded=true;
+        Log.e("donwload","user distance data download triggered");
+        JSONObject obj;
+        JSONArray arr=new JSONArray();
+        obj=new JSONObject();
+try {
+    for (Customer cust : customers) {
+        obj = new JSONObject();
+        obj.put("bookingId", cust.getId());
+
+        StringBuilder googleDirectionsUrl = new StringBuilder("https://maps.googleapis.com/maps/api/directions/json?");
+        googleDirectionsUrl.append("origin=" + myPos.latitude + "," + myPos.longitude);//pass source location over here
+        googleDirectionsUrl.append("&destination=" + cust.getLat() + "," + cust.getLng());//pass destination location over here
+        googleDirectionsUrl.append("&key=" + AndroidApiKey);
+        obj.put("url", googleDirectionsUrl.toString());
+
+        arr.put(obj);
+        Log.e("dataa", googleDirectionsUrl.toString());
+
+
+    }
+
+    new fetchUserLocationData(this, arr);
+}
+catch (Exception e)
+{
+    e.printStackTrace();
+    Log.e("crash occured","crash during json parsing");
+}
     }
 
     @Override
@@ -381,6 +426,8 @@ public class HomePage extends AppCompatActivity
     //USER LOCATION FETCHED
     @Override
     public void userlocationDataFetchComplete(JSONObject object) {
+
+        Log.e("user location","data is fetched");
         try {
 
             for (Customer cust : customers) {
@@ -402,6 +449,7 @@ public class HomePage extends AppCompatActivity
 
     @Override
     public void userLocationDataFetchFail() {
+        Log.e("user location","data is failed");
 
     }
 }
