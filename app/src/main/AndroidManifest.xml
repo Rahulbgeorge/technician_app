@@ -21,10 +21,8 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCwkoMXTW-JgRBBHOWG4jyt9e75r5Sx5BQ" />
-        <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyCwkoMXTW-JgRBBHOWG4jyt9e75r5Sx5BQ" />
+            android:value="AIzaSyCKrObWSq1_SI_Abkr71Rdo3pKx29KJGJM" />
+
 
         <activity
             android:name=".LoginPage"
